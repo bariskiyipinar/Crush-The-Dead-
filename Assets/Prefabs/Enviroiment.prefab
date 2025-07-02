@@ -2627,8 +2627,8 @@ Transform:
   m_GameObject: {fileID: 7742089679572837490}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.0733013, z: 72.39811}
-  m_LocalScale: {x: 1.5, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -4.0733013, z: 72.18}
+  m_LocalScale: {x: 1.5, y: 1, z: 0.9734671}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7760294318487179096}
@@ -4091,6 +4091,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6259199090748756053}
     m_Modifications:
+    - target: {fileID: 3399719030626913478, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
+      propertyPath: m_LODs.Array.data[0].renderers.Array.data[0].renderer
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6141652758128337264, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
       propertyPath: m_Name
       value: SM_Branch_01 (6)
@@ -4180,7 +4184,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6171281997878598166, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
@@ -4549,8 +4554,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Mushroom_01 (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 4633852678157075448, guid: 13db1919278a0e74db4dcc7d8e260718, type: 3}
+      propertyPath: m_LODs.Array.data[0].renderers.Array.data[0].renderer
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7008095688054614620, guid: 13db1919278a0e74db4dcc7d8e260718, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13db1919278a0e74db4dcc7d8e260718, type: 3}
@@ -14966,6 +14976,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6259199090748756053}
     m_Modifications:
+    - target: {fileID: 3399719030626913478, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
+      propertyPath: m_LODs.Array.data[0].renderers.Array.data[0].renderer
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3399719030626913478, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
+      propertyPath: m_LODs.Array.data[1].renderers.Array.data[0].renderer
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6141652758128337264, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
       propertyPath: m_Name
       value: SM_Branch_01 (13)
@@ -15055,7 +15073,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6171281997878598166, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
+    - {fileID: 1439940871099555605, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
@@ -15609,8 +15629,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Mushroom_01 (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 4633852678157075448, guid: 13db1919278a0e74db4dcc7d8e260718, type: 3}
+      propertyPath: m_LODs.Array.data[0].renderers.Array.data[0].renderer
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4633852678157075448, guid: 13db1919278a0e74db4dcc7d8e260718, type: 3}
+      propertyPath: m_LODs.Array.data[1].renderers.Array.data[0].renderer
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7008095688054614620, guid: 13db1919278a0e74db4dcc7d8e260718, type: 3}
+    - {fileID: 8777220652751387545, guid: 13db1919278a0e74db4dcc7d8e260718, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13db1919278a0e74db4dcc7d8e260718, type: 3}

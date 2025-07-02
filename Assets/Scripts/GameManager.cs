@@ -10,18 +10,22 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     private float scoreTimer = 0f; 
-    private float scoreInterval = 1f; 
+    private float scoreInterval = 1f;
+    public int totalCoins = 0;
 
     private void Awake()
     {
-        if (instance != null)
+        if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            DontDestroyOnLoad(gameObject);
+            Destroy(gameObject);    
         }
+
+        totalCoins = PlayerPrefs.GetInt("TotalCoins", 0);
     }
 
     private void Start()
@@ -41,5 +45,16 @@ public class GameManager : MonoBehaviour
             scoreTimer = 0f; 
             scoreText.text = score.ToString(); 
         }
+
+         
     }
+
+    public void AddCoin(int amount)
+    {
+        totalCoins += amount;
+        PlayerPrefs.SetInt("TotalCoins", totalCoins);
+        PlayerPrefs.Save();
+    }
+
+
 }

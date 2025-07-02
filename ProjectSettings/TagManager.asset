@@ -6,6 +6,9 @@ TagManager:
   tags:
   - DestroyClone
   - Obstacle
+  - CloneRemove
+  - SpawnPoint
+  - Zombie
   layers:
   - Default
   - TransparentFX
