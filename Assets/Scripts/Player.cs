@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,53 +9,66 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed = 8f;
     [SerializeField] private float smoothTime = 0.15f;
 
-    private float leftClamp;
-    private float rightClamp;
-    private float targetX;
-    private float velocityX = 0f;
-
+    private float leftClamp, rightClamp, targetX, velocityX = 0f;
     private Rigidbody rb;
 
-    [Header("Zombie Settings")]
+    [Header("UI")]
     [SerializeField] private Text ZombieText;
     [SerializeField] private Image ZombieSensivity;
+    [SerializeField] private Image CarHealth;
+
     private float currentSensivity = 1f;
+    private float currentHealth;
+    [SerializeField] private float maxHealth = 10f;
     [SerializeField] private float decreaseRate = 0.05f;
 
-    [Header("Health Settings")]
-    [SerializeField] private Image CarHealth;
-    [SerializeField] private float maxHealth = 10f; 
-    private float currentHealth;
-
-    [Header("Vehicle Prefab")]
+    [Header("Explosion Prefab")]
     public GameObject Vehicle;
 
-    private  bool isDestroyed = false;
+    [Header("Car Prefabs")]
+    public GameObject Araba1Prefab;
+    public GameObject Araba2Prefab;
+    public GameObject Araba3Prefab;
+    public GameObject Araba4Prefab;  
 
+    private GameObject currentVehicle;
+    private bool isDestroyed = false;
 
-  
-    void Start()
+    private bool hasSpawnedVehicle = false;
+
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        currentHealth = maxHealth;
+    }
 
-        ZombieText.text = GameManager.instance.totalCoins.ToString();
+    void Start()
+    {
+        currentHealth = maxHealth;
         targetX = transform.position.x;
 
-        
-        float worldHalfWidth = Camera.main.orthographicSize * Camera.main.aspect;
-        leftClamp = -worldHalfWidth+0.88f;
-        rightClamp = worldHalfWidth-0.88f;
+        float halfWidth = Camera.main.orthographicSize * Camera.main.aspect;
+        leftClamp = -halfWidth + 0.88f;
+        rightClamp = halfWidth - 0.88f;
+
+        ZombieText.text = GameManager.instance.totalCoins.ToString();
+
+     if(GameManager.instance.totalCoins > 100 )
+        {
+            SpawnSelectedVehicle();
+        }
+            
+     
+        hasSpawnedVehicle = true;
     }
 
     void FixedUpdate()
     {
-        MovePlayer();
+        if (!isDestroyed)
+            MovePlayer();
     }
 
     void Update()
     {
-
         if (isDestroyed) return;
 
         UpdateZombieSensivity();
@@ -69,34 +81,67 @@ public class Player : MonoBehaviour
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            float middleScreen = Screen.width / 2;
-
-            if (touch.phase == TouchPhase.Began)
-            {
-                if (touch.position.x < middleScreen)
-                {
-                    targetX = leftClamp;
-                }
-                else
-                {
-                    targetX = rightClamp;
-                }
-            }
+            targetX = touch.position.x < Screen.width / 2 ? leftClamp : rightClamp;
         }
 
         float smoothX = Mathf.SmoothDamp(rb.position.x, targetX, ref velocityX, smoothTime);
-
         Vector3 nextPos = new Vector3(smoothX, rb.position.y, rb.position.z + speed * Time.fixedDeltaTime);
-
         rb.MovePosition(nextPos);
+    }
+
+    void SpawnSelectedVehicle()
+    {
+        int selectedCar = PlayerPrefs.GetInt("SelectedCar", 1);
+
+        GameObject prefabToSpawn = selectedCar switch
+        {
+            1 => Araba1Prefab,
+            2 => Araba2Prefab,
+            3 => Araba3Prefab,
+            4 => Araba4Prefab,
+            _ => Araba1Prefab
+        };
+
+        if (currentVehicle != null)
+        {
+            Destroy(currentVehicle);
+        }
+
+        currentVehicle = Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
+    }
+
+    void UpdateZombieSensivity()
+    {
+        if (currentSensivity > 0)
+        {
+            currentSensivity -= decreaseRate * Time.deltaTime;
+            ZombieSensivity.fillAmount = currentSensivity;
+        }
+        else
+        {
+            StartCoroutine(VehicleTime(0));
+        }
+    }
+
+    void UpdateCoinText()
+    {
+        ZombieText.text = GameManager.instance.totalCoins.ToString();
+    }
+
+    void UpdateCarHealth()
+    {
+        float ratio = Mathf.Clamp01(currentHealth / maxHealth);
+        CarHealth.transform.localScale = new Vector3(ratio, CarHealth.transform.localScale.y, CarHealth.transform.localScale.z);
+        if (currentHealth <= 0f)
+            StartCoroutine(VehicleTime(0f));
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Obstacle"))
         {
-            StartCoroutine(VehicleTime(0.02f));
             currentHealth = 0;
+            StartCoroutine(VehicleTime(0.02f));
         }
 
         if (other.CompareTag("Zombie"))
@@ -113,51 +158,12 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        GameObject newVehicle = Instantiate(Vehicle, transform.position, Quaternion.Euler(0, -159.21f, 0));
-
+        Instantiate(Vehicle, transform.position, Quaternion.Euler(0, -159.21f, 0));
         isDestroyed = true;
+
+        yield return new WaitForSeconds(2.5f);
         Destroy(this.gameObject);
 
-        ParticleSystem ps = newVehicle.GetComponentInChildren<ParticleSystem>();
-        if (ps != null)
-        {
-            ps.Play();
-            yield return new WaitForSeconds(3f);
-            ps.Stop();
-           
-        }
-       
-    }
-
-    void UpdateZombieSensivity()
-    {
-        if (currentSensivity > 0)
-        {
-            currentSensivity -= decreaseRate * Time.deltaTime;
-            ZombieSensivity.fillAmount = currentSensivity;
-            ZombieSensivity.transform.localScale = new Vector3(currentSensivity, ZombieSensivity.transform.localScale.y, ZombieSensivity.transform.localScale.z);
-           
-        }
-        else
-        {
-            StartCoroutine(VehicleTime(0));
-        }
-    }
-
-    void UpdateCoinText()
-    {
-        ZombieText.text = GameManager.instance.totalCoins.ToString();
-    }
-
-    void UpdateCarHealth()
-    {
-        float healthRatio = Mathf.Clamp01(currentHealth / maxHealth);
-
-        CarHealth.transform.localScale = new Vector3(healthRatio, CarHealth.transform.localScale.y, CarHealth.transform.localScale.z);
-
-        if (currentHealth <= 0f)
-        {
-            StartCoroutine(VehicleTime(0f));
-        }
+        SceneManager.LoadScene("Market");
     }
 }
