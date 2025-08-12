@@ -7,7 +7,7 @@ public class Menu : MonoBehaviour
 {
     public void Play()
     {
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("Market");
     }
 
     public void Exit()

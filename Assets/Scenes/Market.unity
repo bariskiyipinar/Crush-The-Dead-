@@ -1592,18 +1592,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinCounts: {fileID: 1782435036}
-  BuyButton1: {fileID: 772621869}
-  BuyButton2: {fileID: 234883149}
-  BuyButton3: {fileID: 321640544}
-  BuyButton4: {fileID: 1967948847}
-  SelectButton1: {fileID: 772621869}
-  SelectButton2: {fileID: 234883149}
-  SelectButton3: {fileID: 321640544}
-  SelectButton4: {fileID: 1967948847}
-  car1Price: 100
-  car2Price: 150
-  car3Price: 200
-  car4Price: 250
+  carButtons:
+  - {fileID: 772621869}
+  - {fileID: 234883149}
+  - {fileID: 321640544}
+  - {fileID: 1967948847}
+  carPrices: 0000000064000000c80000002c010000
 --- !u!1 &1086256856
 GameObject:
   m_ObjectHideFlags: 0

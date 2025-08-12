@@ -5,127 +5,113 @@ using UnityEngine.UI;
 
 public class MarketManager : MonoBehaviour
 {
-    public static MarketManager instance;
-
     [SerializeField] private TextMeshProUGUI coinCounts;
+    [SerializeField] private Button[] carButtons;
+    [SerializeField] private int[] carPrices;
 
-    [Header("Satýn Alma Butonlarý")]
-    [SerializeField] private Button BuyButton1;
-    [SerializeField] private Button BuyButton2;
-    [SerializeField] private Button BuyButton3;
-    [SerializeField] private Button BuyButton4;
-
-    [Header("Seçme Butonlarý")]
-    [SerializeField] private Button SelectButton1;
-    [SerializeField] private Button SelectButton2;
-    [SerializeField] private Button SelectButton3;
-    [SerializeField] private Button SelectButton4;
-
-    [Header("Arabalarýn Fiyatlarý")]
-    [SerializeField] private int car1Price = 0;
-    [SerializeField] private int car2Price = 150;
-    [SerializeField] private int car3Price = 200;
-    [SerializeField] private int car4Price = 250;
-
-    private int totalCoins;
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    private int selectedCarIndex;
 
     private void Start()
     {
-        totalCoins = PlayerPrefs.GetInt("TotalCoins", 0);
-        coinCounts.text = totalCoins.ToString();
-
-        // Butonlara listener atama
-        BuyButton1.onClick.AddListener(() => BuyCar(1, car1Price));
-        BuyButton2.onClick.AddListener(() => BuyCar(2, car2Price));
-        BuyButton3.onClick.AddListener(() => BuyCar(3, car3Price));
-        BuyButton4.onClick.AddListener(() => BuyCar(4, car4Price));
-
-        SelectButton1.onClick.AddListener(() => SelectCar(1));
-        SelectButton2.onClick.AddListener(() => SelectCar(2));
-        SelectButton3.onClick.AddListener(() => SelectCar(3));
-        SelectButton4.onClick.AddListener(() => SelectCar(4));
-
-        UpdateButtons();
-    }
-
-    private void UpdateButtons()
-    {
-        // 1. araba hep sahipli, satýn alma kapalý seçim açýk
-        BuyButton1.interactable = false;
-        SelectButton1.interactable = true;
-
-        BuyButton2.interactable = totalCoins >= car2Price && !IsCarOwned(2);
-        SelectButton2.interactable = IsCarOwned(2);
-
-        BuyButton3.interactable = totalCoins >= car3Price && !IsCarOwned(3);
-        SelectButton3.interactable = IsCarOwned(3);
-
-        BuyButton4.interactable = totalCoins >= car4Price && !IsCarOwned(4);
-        SelectButton4.interactable = IsCarOwned(4);
-    }
-
-    private void BuyCar(int carIndex, int price)
-    {
-        if (IsCarOwned(carIndex))
+        if (GameManager.instance == null)
         {
-            Debug.Log("Zaten satýn alýndý.");
-            return;
+            Debug.LogWarning("GameManager instance bulunamadý, coinler PlayerPrefs'ten alýnacak.");
+        }
+        UpdateCoinUI();
+
+        selectedCarIndex = PlayerPrefs.GetInt("SelectedCar", 0);
+
+        for (int i = 0; i < carButtons.Length; i++)
+        {
+            int index = i;
+            carButtons[i].onClick.AddListener(() => OnCarButtonClicked(index));
         }
 
-        if (totalCoins >= price)
+        UpdateAllCarUI();
+    }
+
+    private void OnCarButtonClicked(int carIndex)
+    {
+        if (IsCarUnlocked(carIndex))
         {
-            totalCoins -= price;
-            PlayerPrefs.SetInt("TotalCoins", totalCoins);
-            PlayerPrefs.SetInt("CarOwned_" + carIndex, 1);
-            PlayerPrefs.SetInt("SelectedCar", carIndex);
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.SelectCar(carIndex);
+            }
+            else
+            {
+                PlayerPrefs.SetInt("SelectedCar", carIndex);
+                PlayerPrefs.Save();
+            }
 
-            coinCounts.text = totalCoins.ToString();
-            UpdateButtons();
-
-            Debug.Log($"Araba {carIndex} satýn alýndý ve seçildi.");
-            LoadMainScene();
+            selectedCarIndex = carIndex;
+            UpdateAllCarUI();
+            SceneManager.LoadScene("Main");
         }
         else
         {
-            Debug.Log("Yetersiz coin.");
+            TryBuyCar(carIndex);
         }
     }
 
-    private void SelectCar(int carIndex)
+    private void TryBuyCar(int carIndex)
     {
-        if (IsCarOwned(carIndex))
+        int price = carPrices[carIndex];
+        int currentCoins = GameManager.instance != null ? GameManager.instance.totalCoins : PlayerPrefs.GetInt("TotalCoins", 0);
+
+        if (currentCoins >= price)
         {
-            PlayerPrefs.SetInt("SelectedCar", carIndex);
-            Debug.Log($"Araba {carIndex} seçildi.");
-            LoadMainScene();
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.SpendCoin(price);
+                GameManager.instance.SelectCar(carIndex);
+            }
+            else
+            {
+                PlayerPrefs.SetInt("TotalCoins", currentCoins - price);
+                PlayerPrefs.SetInt("SelectedCar", carIndex);
+                PlayerPrefs.Save();
+            }
+
+            UnlockCar(carIndex);
+
+            UpdateCoinUI();
+            UpdateAllCarUI();
+
+            Debug.Log("Araba satýn alýndý ve seçildi: " + carIndex);
         }
         else
         {
-            Debug.Log("Bu araba satýn alýnmamýþ.");
+            Debug.Log("Yeterli coin yok!");
         }
     }
 
-    private bool IsCarOwned(int carIndex)
+    private bool IsCarUnlocked(int carIndex)
     {
-        if (carIndex == 1) return true; // 1. araba varsayýlan olarak sahipli
-        return PlayerPrefs.GetInt("CarOwned_" + carIndex, 0) == 1;
+        return PlayerPrefs.GetInt("CarUnlocked_" + carIndex, carIndex == 0 ? 1 : 0) == 1;
     }
 
-    private void LoadMainScene()
+    private void UnlockCar(int carIndex)
     {
-        SceneManager.LoadScene("Main");
+        PlayerPrefs.SetInt("CarUnlocked_" + carIndex, 1);
+    }
+
+    private void UpdateAllCarUI()
+    {
+        for (int i = 0; i < carButtons.Length; i++)
+        {
+            bool unlocked = IsCarUnlocked(i);
+            int price = carPrices[i];
+            int coins = GameManager.instance != null ? GameManager.instance.totalCoins : PlayerPrefs.GetInt("TotalCoins", 0);
+
+            carButtons[i].interactable = unlocked || coins >= price;
+            carButtons[i].GetComponent<Image>().color = (i == selectedCarIndex) ? Color.green : Color.white;
+        }
+    }
+
+    private void UpdateCoinUI()
+    {
+        int coins = GameManager.instance != null ? GameManager.instance.totalCoins : PlayerPrefs.GetInt("TotalCoins", 0);
+        coinCounts.text = coins.ToString();
     }
 }

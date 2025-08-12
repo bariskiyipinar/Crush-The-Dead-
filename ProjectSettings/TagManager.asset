@@ -9,6 +9,7 @@ TagManager:
   - CloneRemove
   - SpawnPoint
   - Zombie
+  - PlayerCar
   layers:
   - Default
   - TransparentFX

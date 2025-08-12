@@ -13,9 +13,13 @@ public class Player : MonoBehaviour
     private Rigidbody rb;
 
     [Header("UI")]
-    [SerializeField] private Text ZombieText;
-    [SerializeField] private Image ZombieSensivity;
-    [SerializeField] private Image CarHealth;
+     public Text ZombieText;
+     public Image ZombieSensivity;
+     public Image CarHealth;
+     public Text TimeCount;
+
+    private float elapsedTime = 0f;  // geçen süre
+    private int displayedTime = 0;   // UI'da gösterilen tam sayı süre
 
     private float currentSensivity = 1f;
     private float currentHealth;
@@ -25,16 +29,10 @@ public class Player : MonoBehaviour
     [Header("Explosion Prefab")]
     public GameObject Vehicle;
 
-    [Header("Car Prefabs")]
-    public GameObject Araba1Prefab;
-    public GameObject Araba2Prefab;
-    public GameObject Araba3Prefab;
-    public GameObject Araba4Prefab;  
-
-    private GameObject currentVehicle;
+   
     private bool isDestroyed = false;
 
-    private bool hasSpawnedVehicle = false;
+   
 
     void Awake()
     {
@@ -52,13 +50,7 @@ public class Player : MonoBehaviour
 
         ZombieText.text = GameManager.instance.totalCoins.ToString();
 
-     if(GameManager.instance.totalCoins > 100 )
-        {
-            SpawnSelectedVehicle();
-        }
-            
-     
-        hasSpawnedVehicle = true;
+    
     }
 
     void FixedUpdate()
@@ -74,6 +66,16 @@ public class Player : MonoBehaviour
         UpdateZombieSensivity();
         UpdateCoinText();
         UpdateCarHealth();
+
+
+        elapsedTime += Time.deltaTime;
+
+        if (elapsedTime >= 1f)
+        {
+            displayedTime++;
+            elapsedTime = 0f;
+            UpdateTimeCount();
+        }
     }
 
     void MovePlayer()
@@ -89,26 +91,7 @@ public class Player : MonoBehaviour
         rb.MovePosition(nextPos);
     }
 
-    void SpawnSelectedVehicle()
-    {
-        int selectedCar = PlayerPrefs.GetInt("SelectedCar", 1);
-
-        GameObject prefabToSpawn = selectedCar switch
-        {
-            1 => Araba1Prefab,
-            2 => Araba2Prefab,
-            3 => Araba3Prefab,
-            4 => Araba4Prefab,
-            _ => Araba1Prefab
-        };
-
-        if (currentVehicle != null)
-        {
-            Destroy(currentVehicle);
-        }
-
-        currentVehicle = Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
-    }
+   
 
     void UpdateZombieSensivity()
     {
@@ -120,6 +103,15 @@ public class Player : MonoBehaviour
         else
         {
             StartCoroutine(VehicleTime(0));
+        }
+    }
+
+
+    void UpdateTimeCount()
+    {
+        if (TimeCount != null)
+        {
+            TimeCount.text = displayedTime.ToString();
         }
     }
 
@@ -160,10 +152,16 @@ public class Player : MonoBehaviour
 
         Instantiate(Vehicle, transform.position, Quaternion.Euler(0, -159.21f, 0));
         isDestroyed = true;
+        Transform obje=this.gameObject.transform.GetChild(0);
+        obje.gameObject.SetActive(false);
+
+        PlayerPrefs.SetInt("TotalCoins", GameManager.instance.totalCoins);
+        PlayerPrefs.Save();
 
         yield return new WaitForSeconds(2.5f);
-        Destroy(this.gameObject);
+
 
         SceneManager.LoadScene("Market");
+      
     }
 }

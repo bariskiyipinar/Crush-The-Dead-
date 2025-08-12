@@ -31,6 +31,16 @@ public class Clone : MonoBehaviour
         {
             SpawnRoad();
         }
+
+
+        if (Player == null)
+        {
+            GameObject playerCar = GameObject.FindGameObjectWithTag("PlayerCar");
+            if (playerCar != null)
+            {
+                Player = playerCar.transform;
+            }
+        }
     }
 
     private void Update()
