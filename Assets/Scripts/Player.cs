@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     private float leftClamp, rightClamp, targetX, velocityX = 0f;
     private Rigidbody rb;
 
+
+
     [Header("UI")]
      public Text ZombieText;
      public Image ZombieSensivity;
@@ -29,7 +31,10 @@ public class Player : MonoBehaviour
     [Header("Explosion Prefab")]
     public GameObject Vehicle;
 
-   
+    [Header("Effect")]
+    public GameObject ZombieDeadEffect;
+
+
     private bool isDestroyed = false;
 
    
@@ -139,6 +144,12 @@ public class Player : MonoBehaviour
         if (other.CompareTag("Zombie"))
         {
             GameManager.instance.AddCoin(1);
+
+
+            GameObject effect = Instantiate(ZombieDeadEffect,other.transform.position + new Vector3(0f, 2f, 0f), other.transform.rotation);
+            Destroy(effect, 1f);
+
+
             Destroy(other.gameObject);
 
             currentSensivity = Mathf.Clamp01(currentSensivity + 0.1f);
@@ -159,8 +170,8 @@ public class Player : MonoBehaviour
         PlayerPrefs.Save();
 
         yield return new WaitForSeconds(2.5f);
-
-
+        SoundManager.instance.Music.Play();
+    
         SceneManager.LoadScene("Market");
       
     }

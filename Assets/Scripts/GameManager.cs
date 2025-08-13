@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public int selectedCarIndex;
 
     public GameObject VehiclePrefab;
+    public GameObject ZombieDeadEffect;
 
     void Awake()
     {
@@ -73,6 +74,7 @@ public class GameManager : MonoBehaviour
                 playerScript.CarHealth = GameObject.Find("Health").GetComponent<Image>();
                 playerScript.TimeCount = GameObject.Find("TimeCount").GetComponent<Text>();
                 playerScript.Vehicle = VehiclePrefab;
+                playerScript.ZombieDeadEffect = ZombieDeadEffect;
             }
 
            

@@ -458,6 +458,7 @@ MonoBehaviour:
   totalCoins: 0
   selectedCarIndex: 0
   VehiclePrefab: {fileID: 879003251439441503, guid: 67f465ba02a355544a9beb30e662f465, type: 3}
+  ZombieDeadEffect: {fileID: 8063331690356840624, guid: b41270eb23a4ab54e969511b33362501, type: 3}
 --- !u!4 &371104325
 Transform:
   m_ObjectHideFlags: 0

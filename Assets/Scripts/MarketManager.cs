@@ -25,6 +25,7 @@ public class MarketManager : MonoBehaviour
         {
             int index = i;
             carButtons[i].onClick.AddListener(() => OnCarButtonClicked(index));
+
         }
 
         UpdateAllCarUI();
@@ -46,6 +47,7 @@ public class MarketManager : MonoBehaviour
 
             selectedCarIndex = carIndex;
             UpdateAllCarUI();
+            SoundManager.instance.Music.Stop();
             SceneManager.LoadScene("Main");
         }
         else
