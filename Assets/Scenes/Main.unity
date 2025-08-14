@@ -266,7 +266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BindingMode: 1
   m_FollowOffset: {x: 0, y: 3.9, z: -2.55}
-  m_XDamping: 0.61
+  m_XDamping: 0.09
   m_YDamping: 0
   m_ZDamping: 0
   m_AngularDampingMode: 0
@@ -1733,7 +1733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74235d464e424704bb757fc7128670c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: -10
+  speed: -12
 --- !u!1 &1483504618
 GameObject:
   m_ObjectHideFlags: 0
