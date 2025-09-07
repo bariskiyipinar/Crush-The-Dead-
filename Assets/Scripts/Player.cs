@@ -50,12 +50,12 @@ public class Player : MonoBehaviour
         targetX = transform.position.x;
 
         float halfWidth = Camera.main.orthographicSize * Camera.main.aspect;
-        leftClamp = -halfWidth + 0.88f;
-        rightClamp = halfWidth - 0.88f;
+        leftClamp = -2f;
+        rightClamp = 2f;
 
         ZombieText.text = GameManager.instance.totalCoins.ToString();
 
-    
+     
     }
 
     void FixedUpdate()
@@ -104,6 +104,7 @@ public class Player : MonoBehaviour
         {
             currentSensivity -= decreaseRate * Time.deltaTime;
             ZombieSensivity.fillAmount = currentSensivity;
+         
         }
         else
         {
@@ -139,6 +140,12 @@ public class Player : MonoBehaviour
         {
             currentHealth = 0;
             StartCoroutine(VehicleTime(0.02f));
+        }
+
+        if (other.CompareTag("Rock"))
+        {
+            currentHealth -= 1f;
+            Destroy(other.gameObject);
         }
 
         if (other.CompareTag("Zombie"))

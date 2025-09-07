@@ -7,9 +7,11 @@ public class Clone : MonoBehaviour
     [SerializeField] private GameObject RoadPrefab;
     [SerializeField] private GameObject ZombiePrefab;
     [SerializeField] private GameObject ObstaclePrefab;
+    [SerializeField] private GameObject RockPrefab;
     [SerializeField] private List<GameObject> RoadList = new List<GameObject>();
     [SerializeField] private List<GameObject> ZombieList= new List<GameObject>();
     [SerializeField] private List<GameObject> ObstacleList = new List<GameObject>();
+    [SerializeField] private List<GameObject> RockList = new List<GameObject>();
     [SerializeField] private Transform Player;
     private float SpawnZ = 115.1f;
     private float RoadLenght = 80f;
@@ -21,6 +23,9 @@ public class Clone : MonoBehaviour
 
     private float nextObstacleSpawnZ = 40f;
     private float ObstacleSpawnInterval = 20f;
+
+    private float nextRockSpawnZ = 27f;
+    private float RockSpawnInterval = 30f;
 
 
 
@@ -67,9 +72,15 @@ public class Clone : MonoBehaviour
             SpawnObstacle();
             nextObstacleSpawnZ += ObstacleSpawnInterval;
         }
+        if (Player.position.z > nextRockSpawnZ)
+        {
+            SpawnRock();
+            nextRockSpawnZ += RockSpawnInterval;
+        }
 
         DeleteOldZombies();
         DeleteOldObstacles();
+        DeleteOldRocks();
     }
 
 
@@ -165,6 +176,35 @@ public class Clone : MonoBehaviour
         ObstacleList.Add(Obstacle);
     }
 
-   
+    void SpawnRock()
+    {
+        float randomX = Random.value > 0.5f ? -2f : 2f;
+        float randomZ = Player.position.z + 35f;
+
+        Vector3 spawnPos = new Vector3(randomX, 0, randomZ);
+
+
+        GameObject Obstacle = Instantiate(RockPrefab, spawnPos, Quaternion.identity);
+        RockList.Add(Obstacle);
+    }
+
+    void DeleteOldRocks()
+    {
+        List<GameObject> RockToRemove = new List<GameObject>();
+
+        foreach (GameObject Rock in RockList)
+        {
+            if (Rock != null && Player.position.z - Rock.transform.position.z > 40f)
+            {
+                RockToRemove.Add(Rock);
+            }
+        }
+
+        foreach (GameObject Rock in RockToRemove)
+        {
+            RockList.Remove(Rock);
+            Destroy(Rock);
+        }
+    }
 
 }

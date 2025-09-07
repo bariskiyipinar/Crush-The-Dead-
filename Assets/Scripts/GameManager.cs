@@ -70,10 +70,12 @@ public class GameManager : MonoBehaviour
             if (playerScript != null)
             {
                 playerScript.ZombieText = GameObject.Find("CoinCount").GetComponent<Text>();
-                playerScript.ZombieSensivity = GameObject.Find("Health").GetComponent<Image>();
-                playerScript.CarHealth = GameObject.Find("Health").GetComponent<Image>();
+                playerScript.ZombieSensivity = GameObject.Find("ZombieSensivity").GetComponent<Image>();
+                playerScript.CarHealth = GameObject.Find("CarHealth").GetComponent<Image>();
                 playerScript.TimeCount = GameObject.Find("TimeCount").GetComponent<Text>();
                 playerScript.Vehicle = VehiclePrefab;
+                GameObject LightEffect = GameObject.Find("LightEffect");
+                LightEffect.transform.SetParent(currentPlayerCar.transform);
                 playerScript.ZombieDeadEffect = ZombieDeadEffect;
             }
 

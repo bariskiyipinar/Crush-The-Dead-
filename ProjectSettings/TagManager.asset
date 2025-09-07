@@ -10,6 +10,7 @@ TagManager:
   - SpawnPoint
   - Zombie
   - PlayerCar
+  - Rock
   layers:
   - Default
   - TransparentFX
