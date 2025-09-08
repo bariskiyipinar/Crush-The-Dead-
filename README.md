@@ -1,32 +1,47 @@
-#Crush The Dead
+# 🧟 Crush The Dead  
 
-Crush The Dead, Unity ile geliştirilen bir arcade tarzı mini oyun.
-Amaç, aracı kontrol ederek zombileri ezmek, mümkün olduğunca uzun süre hayatta kalmak ve en yüksek skoru elde etmektir.
+**Crush The Dead**, Unity kullanılarak geliştirilen **mobil arcade tarzı bir hayatta kalma oyunu**.  
+Oyuncu, aracını kontrol ederek zombileri ezmeye çalışır ve mümkün olduğunca uzun süre hayatta kalmaya çalışır.  
 
-🎮 Oyun Mekanikleri
+---
 
-Aracın otomatik ilerleyişi ve sağ/sol kontrol
+## 🎮 Oyun Mekanikleri  
 
-Zombilerin rastgele spawn edilmesi
+- 🚗 Aracın **otomatik ileri hareketi**  
+- ↔️ Dokunmatik kontrollerle **sağ/sol yön değiştirme**  
+- 🧟 **Rastgele spawn** edilen zombiler  
+- 💥 Çarpışma sonrası **particle effect** ve görsel efektler  
+- ❤️ UI üzerinden **can barı**, ⏱️ **geçen süre** ve 💰 **skor takibi**  
+- 🔼 Zamanla artan **zorluk seviyesi**  
 
-Çarpışma sonrası particle effect ve görsel efektler
+---
 
-UI üzerinden can barı, süre ve skor takibi
+## 🛠️ Kullanılan Teknolojiler  
 
-Zorluk seviyesinin zamanla artması
+- **Unity (C#)**  
+- **Particle System**  
+- **Unity UI** (Text, Image, Health Bar vb.)  
+- **Mobil giriş kontrolleri** (Touch input)  
+- **Basit ses ve müzik entegrasyonu**  
 
-🛠️ Teknolojiler
+---
 
-Unity (C#)
+## 📱 Platform  
 
-Particle System
+- Oyun, **mobil Android cihazlar** için geliştirilmiştir.  
+- APK build alınıp Android cihazlarda test edilmiştir.  
 
-Unity UI
+---
 
-Basit ses ve müzik entegrasyonu
+## 📂 Proje Bağlantıları  
 
-📂 Proje Bağlantıları
+- 🎮 **Itch.io sayfası:** [https://brsxdev.itch.io/crush-the-dead](https://brsxdev.itch.io/crush-the-dead)  
+- 💻 **Kaynak kodları:** Bu repo  
 
-Itch.io sayfası: https://brsxdev.itch.io/crush-the-dead
+---
 
-Kaynak kodları: Bu repo
+## 🚀 Kurulum ve Çalıştırma  
+
+1. Bu projeyi bilgisayarına klonla:  
+   ```bash
+   git clone https://github.com/kullaniciadiniz/crush-the-dead.git
