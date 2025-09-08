@@ -6,6 +6,7 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
     public AudioSource Music;
+    public AudioSource carMusic;
 
     private void Awake()
     {
@@ -20,5 +21,7 @@ public class SoundManager : MonoBehaviour
         }
 
         Music.Play();
+        carMusic.Stop();
+
     }
 }

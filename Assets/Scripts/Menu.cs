@@ -46,25 +46,25 @@ public class Menu : MonoBehaviour
 
     public void SetLow()
     {
-        QualitySettings.globalTextureMipmapLimit = 2; // d���k ��z�n�rl�kte texture
+        QualitySettings.globalTextureMipmapLimit = 2; 
         QualitySettings.anisotropicFiltering = AnisotropicFiltering.Disable;
-        QualitySettings.shadows = ShadowQuality.Disable; // g�lgeler kapal�
-        QualitySettings.antiAliasing = 0; // AA kapal�
+        QualitySettings.shadows = ShadowQuality.Disable; 
+        QualitySettings.antiAliasing = 0; 
     }
 
     public void SetMedium()
     {
         QualitySettings.globalTextureMipmapLimit = 1;
         QualitySettings.anisotropicFiltering = AnisotropicFiltering.Enable;
-        QualitySettings.shadows = ShadowQuality.HardOnly; // sadece sert g�lge
-        QualitySettings.antiAliasing = 2; // 2x AA
+        QualitySettings.shadows = ShadowQuality.HardOnly; 
+        QualitySettings.antiAliasing = 2; 
     }
 
     public void SetHigh()
     {
-        QualitySettings.globalTextureMipmapLimit = 0; // tam ��z�n�rl�k
+        QualitySettings.globalTextureMipmapLimit = 0; 
         QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
-        QualitySettings.shadows = ShadowQuality.All; // t�m g�lgeler
-        QualitySettings.antiAliasing = 4; // 4x AA
+        QualitySettings.shadows = ShadowQuality.All; 
+        QualitySettings.antiAliasing = 4; 
     }
 }

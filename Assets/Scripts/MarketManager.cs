@@ -48,6 +48,7 @@ public class MarketManager : MonoBehaviour
             selectedCarIndex = carIndex;
             UpdateAllCarUI();
             SoundManager.instance.Music.Stop();
+            SoundManager.instance.carMusic.Play();
             SceneManager.LoadScene("Main");
         }
         else

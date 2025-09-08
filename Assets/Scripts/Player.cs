@@ -20,8 +20,8 @@ public class Player : MonoBehaviour
      public Image CarHealth;
      public Text TimeCount;
 
-    private float elapsedTime = 0f;  // geçen süre
-    private int displayedTime = 0;   // UI'da gösterilen tam sayı süre
+    private float elapsedTime = 0f;  
+    private int displayedTime = 0; 
 
     private float currentSensivity = 1f;
     private float currentHealth;
@@ -151,7 +151,7 @@ public class Player : MonoBehaviour
         if (other.CompareTag("Zombie"))
         {
             GameManager.instance.AddCoin(1);
-
+            currentHealth += 1f;
 
             GameObject effect = Instantiate(ZombieDeadEffect,other.transform.position + new Vector3(0f, 2f, 0f), other.transform.rotation);
             Destroy(effect, 1f);
@@ -175,9 +175,10 @@ public class Player : MonoBehaviour
 
         PlayerPrefs.SetInt("TotalCoins", GameManager.instance.totalCoins);
         PlayerPrefs.Save();
-
+        SoundManager.instance.carMusic.Stop();
         yield return new WaitForSeconds(2.5f);
         SoundManager.instance.Music.Play();
+       
     
         SceneManager.LoadScene("Market");
       
